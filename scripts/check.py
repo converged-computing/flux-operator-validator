@@ -81,7 +81,7 @@ class FluxOperatorValidator:
                 pre_command = "\n".join(pre_command.split("\n")[1:])
 
         render = jinja2.Template(template).render(
-            {"preCommand": pre_command, "commands": commands}
+            {"preCommand": pre_command, "commands": commands, "container": container}
         )
         if self.debug:
             print(f"\n{render}\n")
@@ -89,6 +89,7 @@ class FluxOperatorValidator:
         tempdir = tempfile.mkdtemp(prefix="flux-operator-validator-")
         tmpfile = os.path.join(tempdir, "entrypoint.sh")
         write_file(render, tmpfile)
+
         res = subprocess.run(
             [
                 "docker",
@@ -101,7 +102,6 @@ class FluxOperatorValidator:
                 container,
                 "/tmp/flux-operator-validator/entrypoint.sh",
             ],
-            check=True,
         )
         os.remove(tmpfile)
         sys.exit(res.returncode)
@@ -116,9 +116,9 @@ def main():
     args, extra = parser.parse_known_args()
 
     # Show args to the user
-    print("    container: %s" % args.container)
-    print("   preCommand: %s" % args.pre_command)
-    print("         time: %s" % args.time)
+    print(f"    container: {args.container}")
+    print(f"   preCommand: {args.pre_command}")
+    print(f"         time: {args.time}")
 
     if args.pre_command and not os.path.exists(args.pre_command):
         sys.exit(

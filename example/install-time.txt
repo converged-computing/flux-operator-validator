@@ -1,0 +1,2 @@
+# custom preCommand logic (run at start of script)
+apt-get install -y time
