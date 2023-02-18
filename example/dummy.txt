@@ -1,0 +1,4 @@
+# custom preCommand logic (run at start of script)
+echo "The present working directory..."
+echo $PWD
+echo "Preparing environment..."
