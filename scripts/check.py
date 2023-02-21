@@ -50,7 +50,7 @@ def get_parser():
         dest="multi_user",
         default=False,
         action="store_true",
-        help="check for time requirements",
+        help="check for multi-user requirements",
     )
     parser.add_argument(
         "--debug",
