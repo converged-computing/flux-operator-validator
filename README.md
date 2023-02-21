@@ -72,6 +72,23 @@ And an example of a container that requires a pre command block to load a spack 
 $ python ./scripts/check.py ghcr.io/rse-ops/spack-ubuntu-libfabric-ssh:ubuntu-20.04 --pre-command ./example/preCommand.txt
 ```
 
+#### Example with Multi-User
+
+A container that will allow multi-user mode needs openssl. This should ship with Flux.
+
+```bash
+$ python ./scripts/check.py ghcr.io/rse-ops/lammps:flux-sched-focal-v0.24.0 --multi-user
+```
+```console
+...
+ghcr.io/rse-ops/lammps:flux-sched-focal-v0.24.0
+Container: ghcr.io/rse-ops/lammps:flux-sched-focal-v0.24.0
+🟢️ Found active user root
+🟢️ sudo is installed
+🟢️ flux is installed
+🟢️ openssl is installed
+```
+
 #### Example with Time
 
 When you set logging->timed to true, we require the time command, and we can check for that too. Here is an example without

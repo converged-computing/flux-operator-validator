@@ -46,6 +46,13 @@ def get_parser():
         help="check for time requirements",
     )
     parser.add_argument(
+        "--multi-user",
+        dest="multi_user",
+        default=False,
+        action="store_true",
+        help="check for multi-user requirements",
+    )
+    parser.add_argument(
         "--debug",
         default=False,
         action="store_true",
@@ -62,7 +69,7 @@ class FluxOperatorValidator:
     def __init__(self, debug=False):
         self.debug = debug
 
-    def check(self, container, pre_command=None, time=False):
+    def check(self, container, pre_command=None, time=False, multi_user=False):
         """
         Basic checks that a container is valid for the Flux Operator
 
@@ -73,6 +80,10 @@ class FluxOperatorValidator:
         subprocess.run(["docker", "pull", container], check=True)
 
         commands = "" if not time else " time"
+
+        # Multi user mode requires openssl
+        if multi_user:
+            commands += " openssl"
         if pre_command and os.path.exists(pre_command):
             pre_command = read_file(pre_command)
 
@@ -119,6 +130,7 @@ def main():
     print(f"    container: {args.container}")
     print(f"   preCommand: {args.pre_command}")
     print(f"         time: {args.time}")
+    print(f"    multiUser: {args.multi_user}")
 
     if args.pre_command and not os.path.exists(args.pre_command):
         sys.exit(
@@ -126,7 +138,7 @@ def main():
         )
 
     cli = FluxOperatorValidator()
-    cli.check(args.container, args.pre_command, args.time)
+    cli.check(args.container, args.pre_command, args.time, args.multi_user)
 
 
 if __name__ == "__main__":
