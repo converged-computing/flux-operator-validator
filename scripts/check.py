@@ -81,9 +81,9 @@ class FluxOperatorValidator:
 
         commands = "" if not time else " time"
 
-        # Multi user mode requires openssl
+        # Multi user mode requires openssl and systemctl
         if multi_user:
-            commands += " openssl"
+            commands += " openssl systemctl"
         if pre_command and os.path.exists(pre_command):
             pre_command = read_file(pre_command)
 
